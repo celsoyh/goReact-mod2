@@ -21,6 +21,18 @@ export const Repository = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    button {
+      border: none;
+      background: transparent;
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      i {
+        color: #ff5958;
+        font-size: 18px;
+      }
+    }
 
     img {
       width: 64px;

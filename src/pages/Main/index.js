@@ -13,6 +13,30 @@ export default class Main extends Component {
     repositories: [],
   };
 
+  componentDidMount = async () => {
+    this.setState({
+      loading: true,
+    });
+
+    this.setState({
+      loading: false,
+      repositories: await this.getLocalRepositories(),
+    });
+  };
+
+  setLocalRepositories = (repos) => {
+    localStorage.setItem('searchedRepos', JSON.stringify(repos));
+  };
+
+  removeRepository = async (id) => {
+    await this.setState({ repositories: this.state.repositories.filter(repo => repo.id !== id) });
+    this.setLocalRepositories(this.state.repositories);
+  };
+
+  getLocalRepositories = () => (localStorage.getItem('searchedRepos') !== null
+    ? JSON.parse(localStorage.getItem('searchedRepos'))
+    : []);
+
   handleAddRepository = async (e) => {
     e.preventDefault();
 
@@ -23,11 +47,13 @@ export default class Main extends Component {
 
       repository.lastCommit = moment(repository.pushed_at).fromNow();
 
-      this.setState({
+      await this.setState({
         repositories: [...this.state.repositories, repository],
         repositoryInput: '',
         repositoryError: false,
       });
+
+      this.setLocalRepositories(this.state.repositories);
     } catch (err) {
       this.setState({ repositoryError: true });
     } finally {
@@ -55,7 +81,7 @@ export default class Main extends Component {
           <button type="submit">{loading ? <i className="fa fa-spinner fa-pulse" /> : 'Ok'}</button>
         </Form>
 
-        <CompareList repositories={repositories} />
+        <CompareList removeRepo={this.removeRepository} repositories={repositories} />
       </Container>
     );
   }
