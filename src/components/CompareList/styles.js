@@ -28,9 +28,16 @@ export const Repository = styled.div`
       position: absolute;
       right: 5px;
       top: 5px;
+      cursor: pointer;
       i {
         color: #ff5958;
         font-size: 18px;
+      }
+      &.reload {
+        position: relative;
+        i {
+          color: #ffd91e;
+        }
       }
     }
 
@@ -51,6 +58,20 @@ export const Repository = styled.div`
 
   ul {
     list-style: none;
+    position: relative;
+    button {
+      border: none;
+      background: transparent;
+      position: absolute;
+      margin: 0;
+      right: 0;
+      left: 0;
+      top: 5px;
+      i {
+        color: #f6cd04;
+        font-size: 18px;
+      }
+    }
     li {
       font-weight: bold;
       padding: 12px 20px;

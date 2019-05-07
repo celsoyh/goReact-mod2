@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Container, Repository } from './styles';
 
-const CompareList = ({ repositories, removeRepo }) => (
+const CompareList = ({ repositories, removeRepo, updateRepo }) => (
   <Container>
     {repositories.map(repository => (
       <Repository key={repository.id}>
@@ -15,6 +15,9 @@ const CompareList = ({ repositories, removeRepo }) => (
           <img src={repository.owner.avatar_url} alt={repository.owner.login} />
           <strong>{repository.name}</strong>
           <small>{repository.owner.login}</small>
+          <button type="button" className="reload" onClick={() => updateRepo(repository.full_name)}>
+            <i className="fa fa-bolt" />
+          </button>
         </header>
         <ul>
           <li>

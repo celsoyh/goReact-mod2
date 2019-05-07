@@ -33,6 +33,25 @@ export default class Main extends Component {
     this.setLocalRepositories(this.state.repositories);
   };
 
+  updateRepo = async (repoDirectory) => {
+    this.setState({ loading: true });
+    const { repositories } = this.state;
+
+    try {
+      const { data: repository } = await api.get(`/repos/${repoDirectory}`);
+
+      repository.lastCommit = await moment(repository.pushed_at).fromNow();
+
+      this.setState({
+        repositories: await repositories.map(rep => (rep.id === repository.id ? repository : rep)),
+      });
+    } catch (err) {
+      this.setState({ repositoryError: true });
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
   getLocalRepositories = () => (localStorage.getItem('searchedRepos') !== null
     ? JSON.parse(localStorage.getItem('searchedRepos'))
     : []);
@@ -81,7 +100,11 @@ export default class Main extends Component {
           <button type="submit">{loading ? <i className="fa fa-spinner fa-pulse" /> : 'Ok'}</button>
         </Form>
 
-        <CompareList removeRepo={this.removeRepository} repositories={repositories} />
+        <CompareList
+          updateRepo={this.updateRepo}
+          removeRepo={this.removeRepository}
+          repositories={repositories}
+        />
       </Container>
     );
   }
