@@ -7,7 +7,7 @@
   "extends": ["react-app", "airbnb"],
   "plugins": ["import", "jsx-a11y", "react"],
   "rules": {
-    "react/jsx-filename-extensions": [
+    "react/jsx-filename-extension": [
       "error",
       { "extensions": [".js", ".jsx"] }
     ],
